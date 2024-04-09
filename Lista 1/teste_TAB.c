@@ -1,20 +1,5 @@
-#include "TAB.c"
-#include <stdio.h>
 #include <string.h>
-#include <stdio.h>
-
-//(Q2) espelho de uma árvore (o que está a esquerda na árvore original, estará a direita no espelho, e
-//vice-versa): TAB* espelho (TAB *a);
-
-TAB* espelho (TAB *a){
-    TAB * aux = TAB_inicializa();
-    if(!a) return a;
-    TAB * x = espelho(a->dir);
-    TAB * y = espelho(a->esq);
-    aux = TAB_cria(a-> info, x, y);
-    return aux;
-}
-
+#include "TAB.h"
 
 int main(void){
   int no, pai;
@@ -38,8 +23,6 @@ int main(void){
     else resp->dir = TAB_cria(no, NULL, NULL);
   }while(1);
   TAB_imp_ident(a);
-  TAB * teste = espelho(a);
-  TAB_imp_ident(teste);
   printf("\n");
   
   TAB_libera(a);

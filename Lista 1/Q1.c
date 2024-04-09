@@ -1,88 +1,53 @@
+#include "TAB.c"
 #include <stdio.h>
-#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
 
-typedef struct lista{
-    int info;
-    struct lista *prox;
-}TLSE;
+//(Q1) cópia de uma árvore: TAB* copia (TAB *a);
 
-TLSE * TLSE_inicializa(void){
-    return NULL;
+
+TAB* copia (TAB *a){
+    TAB *aux = TAB_inicializa();
+    if(!a) return a;
+    //jeito mais fácil de entender
+    TAB * x = copia(a->esq);
+    TAB * y = copia(a->dir);
+    aux = TAB_cria(a->info, x, y);
+    return aux;
+
+    //jeito mais complexo, mas que entendi depois
+    // aux = TAB_cria(a->info, copia(a->esq), copia(a->dir));
+    // return aux;
 }
 
-TLSE * TLSE_ins_ini(TLSE * l, int x){
-    TLSE * novo = (TLSE*)malloc(sizeof(TLSE));
-    novo->prox = l;
-    l = novo;
-    novo->info = x;
-    return l;
-}
-
-TLSE * TLSE_ins_fim(TLSE * l, int x){
-    if(!l) return TLSE_ins_ini(l, x);
-    l->prox = TLSE_ins_fim(l->prox, x);
-    return l;
-}
-
-TLSE * TLSE_retira(TLSE * l, int x){
-    if(!l) return l;
-    if(l->info != x) l->prox = TLSE_retira(l->prox, x);
-    TLSE * p = l;
-    l = l->prox;
-    free(p);
-    return l;
-}
-
-TLSE * TLSE_busca(TLSE * l, int x){
-    //if(!l) return l;
-    //if(l->info == x){
-    if((!l) || (l->info == x)) return l;
-    return TLSE_busca(l->prox, x);
-}
-
-TLSE * TLSE_ins_ord(TLSE * l, int x){
-    if(!l) return TLSE_ins_ini(l, x);
-    if(l->info < x) l->prox = TLSE_ins_ord(l->prox, x);
-    else return TLSE_ins_ini(l, x);
-    return l;
-}
-
-void TLSE_imprime(TLSE * l){
-    if(l){
-        printf("%d\n", l->info);
-        TLSE_imprime(l->prox);
-    }
-}
-
-void TLSE_imprime_rev(TLSE * l){
-    if(l){
-        TLSE_imprime(l->prox);
-        printf("%d\n", l->info);
-    }
-}
-
-void TLSE_libera(TLSE *l){
-    if(!l) return;
-    TLSE_libera(l->prox);
-    free(l);
-}
 
 
 int main(void){
-    TLSE *l = TLSE_inicializa();
-    int x;
-    do{
-        scanf("%d", &x);
-        if(x < 0) break;
-        //l = TLSE_ins_fim(l, x);
-    }while(1);
-    printf("A lista original: ");
-    TLSE_imprime(l);
-    printf("\n");
-
-    printf("Agora o resultado da funcao criada: \n");
-    //TLSE_imprime_rev(l);
-    TLSE_libera(l);
-
-    return 0;
+  int no, pai;
+  printf("Digite a raiz da arvore... ");
+  scanf("%d", &no);
+  TAB *a = TAB_cria(no, NULL, NULL), *resp;
+  char repete;
+  do{
+    char lado[2];
+    printf("Quer continuar inserindo nos na árvore (digite N ou n para parar)? ");
+    scanf(" %c", &repete);
+    if((repete == 'N') || (repete == 'n')) break;
+    printf("Digite o pai (que deve existir), o filho a ser inserido na arvore e a posição E(ESQ) ou D(DIR)... ");
+    scanf("%d%d%s", &pai, &no, lado);
+    resp = TAB_busca(a, pai);
+    if(!resp){
+      TAB_libera(a);
+      return 0;
+    }
+    if(strcmp(lado, "E") == 0) resp->esq = TAB_cria(no, NULL, NULL);
+    else resp->dir = TAB_cria(no, NULL, NULL);
+  }while(1);
+  TAB_imp_ident(a);
+  TAB * teste = copia(a);
+  TAB_imp_ident(teste);
+  printf("\n");
+  
+  TAB_libera(a);
+  return 0;
 }

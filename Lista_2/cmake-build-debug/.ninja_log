@@ -1,0 +1,10 @@
+# ninja log v5
+69	208	7343345610080331	CMakeFiles/Lista_2.dir/Q5.c.obj	acdcf0d5eb145d2f
+14	158	7343345609587712	CMakeFiles/Lista_2.dir/Q1.c.obj	b2d907082db19ca2
+95	218	7343345610196281	CMakeFiles/Lista_2.dir/teste_TABB.c.obj	c07dd226b052f323
+1	161	7343345609617711	CMakeFiles/Lista_2.dir/Q2.c.obj	b249adb82e73b045
+25	179	7343345609798753	CMakeFiles/Lista_2.dir/Q3f.c.obj	1c5406737e1a4a42
+1	112	7343346489794451	CMakeFiles/Lista_2.dir/Q4.c.obj	70dfdb25c73abbc
+40	191	7343345609928760	CMakeFiles/Lista_2.dir/Q3d.c.obj	d70928520b13417f
+80	221	7343345610216244	CMakeFiles/Lista_2.dir/TABB.c.obj	804ef551ab3e1a79
+2	168	7343346934081629	build.ninja	4070995cd558e01c
