@@ -4,9 +4,9 @@
 #include <limits.h>
 #include "TAB.c"
 
-//usando uma copia e retirando cada no depois de achar o menor
+//usando uma copia para consseguir achar o menor várias vezes
 
-
+//para saber o tamanho que irei alocar o vetor
 int contador(TAB * a){
     if(!a) return 0;
     return contador(a->esq) + contador(a->dir) + 1;
@@ -15,6 +15,7 @@ int contador(TAB * a){
     // return x+y+1;
 }
 
+//criando a árvore que posso mexer nos infos, permitindo pegar o menor várias vezes
 TAB * copia(TAB * a, TAB * copy){
     if(!a) return a;
     copy = TAB_cria(a->info, NULL, NULL);
@@ -23,6 +24,7 @@ TAB * copia(TAB * a, TAB * copy){
     return copy;
 }
 
+//pega o menor da árvore atual
 TAB * menor(TAB * a){
     if(!a) return a;
     TAB * menor_esq = menor(a->esq);
@@ -33,6 +35,7 @@ TAB * menor(TAB * a){
     return resp;
 }
 
+//resolve tudo, chama a função menor várias vezes e a cada menor, altera o info para não sair de novo e coloca no vetor
 void resolve_tudo(TAB * a, TAB * copy, int * vetor){
     int pos = 0;
     TAB * atual = NULL;
@@ -47,6 +50,7 @@ void resolve_tudo(TAB * a, TAB * copy, int * vetor){
     return;
 }
 
+//cria o vetor, a cópia e retorna o vetor
 int * vetor_ord (TAB * a){
     int qtd = contador(a);
     int * vetor = (int*)malloc(sizeof(int)*qtd);
