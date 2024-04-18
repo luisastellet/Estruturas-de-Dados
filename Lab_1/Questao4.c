@@ -17,7 +17,8 @@ int estbin(TAB *a){
     return ver_esq && ver_dir;
 }
 
-int main(void){
+
+  int main(void){
   int no, pai;
   printf("Digite a raiz da arvore... ");
   scanf("%d", &no);
@@ -40,11 +41,11 @@ int main(void){
   }while(1);
   TAB_imp_ident(a);
   printf("\n");
-  
+
   int x = estbin(a);
   if(x) printf("E estritamente binaria!");
   else printf("Nao e estritamente binaria!");
 
   TAB_libera(a);
   return 0;
-}
+  }
