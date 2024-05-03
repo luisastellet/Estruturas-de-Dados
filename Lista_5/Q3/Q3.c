@@ -6,42 +6,78 @@
 // inteiros e imprima na tela o número de vezes que cada elemento aparece e em quais linhas – void
 // resumo(char *Arq).
 
+typedef struct lista{
+  int numero;
+  int cont;
+  struct lista * prox;
+}TLSE;
+
+int ja_foi(TLSE * l, int x){ // se for 1, achou, se for 0 não achou
+  TLSE * p = l;
+  int ver = 0;
+  while(p){
+    if(p->numero == x) ver = 1;
+    p = p->prox;
+  }
+  return ver;
+}
+
+void libera(TLSE * l){
+  if(!l) return;
+  libera(l->prox);
+  free(l);
+  return;
+}
+
+TLSE * insere(TLSE * lista, int x, int cont){
+  TLSE * novo = (TLSE*)malloc(sizeof(TLSE));
+  novo->cont = cont;
+  novo->numero = x;
+  novo->prox = lista;
+  lista = novo;
+  return lista;
+}
 
 void resumo(char *Arq){
   FILE *fp = fopen(Arq, "r");
-  if (!fp) exit(1);
-  int r, referencia, linha_principal = 1, linha_aux = 0;
+  FILE *aux = fopen(Arq, "r");
+  if (!fp || !aux) exit(1);
+  TLSE * lista = NULL;
+  int linhas=0, r, referencia, valor;
 
-  while(1){
-    r = fscanf(fp, "%d", &referencia);
-    if(r != 1) break;
-    printf("Numero %d na linha %d.\n", referencia, linha_principal);
+  while(fscanf(fp, "%d", &referencia) == 1){ //vendo o tamanho de linhas pra usar no for
+    linhas++;
+  }
+  rewind(fp); //subindo o cursor
+
+  for(int i = 1; i<=linhas; i++){ //irá ver cada linha principal
+    if(fscanf(fp, "%d", &referencia) == 1){
+      if(!ja_foi(lista, referencia)){ //não foi ainda
+        lista = insere(lista, referencia, 0);
+
+        rewind(aux);
+        for(int j = 1; j<=linhas; j++){ //irá ver as linhas se batem com a linha principal
+          fscanf(aux, "%d", &valor);
+          if(valor == referencia){
+            (lista->cont)++;
+            printf("%d aparece na linha %d\n", referencia, j);
+          }
+        }
+        printf("\tO numero %d aparece %d vez(es).\n\n", referencia, lista->cont);
+      }else continue;
+    }else break;
   }
 
-  int * vetor = (int)malloc(sizeof(int)*linha);
-  rewind(fp); //subindo o cursos pro início
+  fclose(fp);
+  fclose(aux);
+  libera(lista);
 
-  while(1){
-    r = fscanf(fp, "%d", &referencia);
-    vetor[indice] = referencia;
-    indice++;
-    int r1 = 1;
-    while(r1 == 1){
-      
-    }
-  }
-
-
-
+  return;
 }
 
 int main () {
-  char dadosSaida[50];
 
-  printf("digite o nome do arquivo de saida: \n");
-  scanf("%s", dadosSaida);
-
-  media("entrada-Q3");
+  resumo("entrada-Q3");
 
   return 0;
 }
