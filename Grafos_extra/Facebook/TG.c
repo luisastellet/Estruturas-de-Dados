@@ -76,7 +76,7 @@ TVIZ* TG_busca_aresta(TG *g, int no1, int no2){
 }
 
 TG* TG_ins_no(TG *g, int x, char * nome){
-  TG *p = TG_busca_no(g, nome);
+  TG *p = TG_busca_no(g, x);
   if(!p){
     p = (TG*) malloc(sizeof(TG));
     p->id_no = x;

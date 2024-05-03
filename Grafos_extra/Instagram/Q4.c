@@ -26,7 +26,7 @@ int segue_mais_velho(TG *g, int flag){
             viz = viz->prox_viz;
         }
         if(ver == 1){
-            printf("%s segue so pessoas mais velhas que ela/ele.\n", p->nome_no);
+            if(flag) printf("%s segue so pessoas mais velhas que ela/ele.\n", p->nome_no);
             qtd++;
         }
         p = p->prox_no;

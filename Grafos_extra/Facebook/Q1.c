@@ -45,7 +45,7 @@ int main(void){
         {
         case 1:
             printf("\n\tDigite o no a ser inserido no grafo e o nome: ");
-            scanf("%d %s", &x, &nome);
+            scanf("%d %s", &x, nome);
             printf("\n");
             grafo = TG_ins_no(grafo, x, nome);
             break;
