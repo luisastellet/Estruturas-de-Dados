@@ -10,15 +10,15 @@
 void resumo(char *Arq){
   FILE *fp = fopen(Arq, "r");
   if (!fp) exit(1);
-  int r, referencia, linhas, indice = 0;
+  int r, referencia, linha_principal = 1, linha_aux = 0;
 
   while(1){
     r = fscanf(fp, "%d", &referencia);
     if(r != 1) break;
-    else linhas++;
+    printf("Numero %d na linha %d.\n", referencia, linha_principal);
   }
 
-  int * vetor = (int)malloc(sizeof(int)*linhas);
+  int * vetor = (int)malloc(sizeof(int)*linha);
   rewind(fp); //subindo o cursos pro início
 
   while(1){
@@ -35,11 +35,13 @@ void resumo(char *Arq){
 
 }
 
-int main(int argc, char **argv){
-  int i, x = atoi(argv[1]);
-  printf("%d\n", x);
-  for(i = 0; i < argc; i++)
-    printf("argv[%d] = %s\n", i, argv[i]);
-    
+int main () {
+  char dadosSaida[50];
+
+  printf("digite o nome do arquivo de saida: \n");
+  scanf("%s", dadosSaida);
+
+  media("entrada-Q3");
+
   return 0;
 }
