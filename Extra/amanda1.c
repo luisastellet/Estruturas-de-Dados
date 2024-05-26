@@ -1,17 +1,29 @@
-// Descubra se uma TAB é AVL ou não
+//retornar em uma lista encadeada todos os elementos entre x e y
+//é uma TAB
 
 #include "TAB.c"
+#include "TLSE.c"
 #include <string.h>
-#include <limits.h>
 
+TLSE * ins_ordenado(TLSE * l, int x){
+  if(!l || (l->info > x)) return TLSE_insere(l, x);
+  l->prox = ins_ordenado(l->prox, x);
+  return l;
+}
 
-int eh_TABB (TAB *a){
-  if(!a) return 1;
-  if(a->esq && (a->esq->info > a->info)) return 0; //se o da esquerda for maior
-  if(a->dir && (a->dir->info < a->info)) return 0; //se o da direita for maior
-  int r_esq = eh_TABB(a->esq);
-  int r_dir = eh_TABB(a->dir);
-  return r_esq && r_dir;
+TLSE * aux(TAB * a, int x, int y, TLSE * l){
+  if(!a) return l;
+  if((a->info > x) && (a->info < y)) l = ins_ordenado(l, a->info);
+  l = aux(a->esq, x, y, l);
+  l = aux(a->dir, x, y, l);
+  return l;
+}
+
+TLSE * entreXY (TAB * a, int x, int y){
+  if(!a) return NULL;
+  TLSE * l = TLSE_inicializa();
+  l = aux(a, x, y, l);
+  return l;
 }
 
 int main(void){
@@ -37,11 +49,14 @@ int main(void){
     TAB_imp_ident(a);
   }while(1);
   TAB_imp_ident(a);
-  int teste = eh_TABB(a);
-  if(teste) printf("Essa TAB eh uma TABB!!!");
-  else printf("Essa TAB NAO eh uma TABB :(");
-  printf("\n");
+  
+  int x, y;
+  printf("entre quem? ");
+  scanf("%d %d", &x, &y);
+
+  TLSE * teste = entreXY(a, x, y);
+  TLSE_imprime(teste);
   
   TAB_libera(a);
   return 0;
-}
+} 

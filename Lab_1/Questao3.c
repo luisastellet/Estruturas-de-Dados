@@ -16,7 +16,8 @@
 // }
 
 //    Desce tudo e coloca, então fica na ordem
-//    Ai na outra função tem q colocar por ultimo, depois de chamara  recursão
+//    Ai na outra função tem q colocar por ultimo, depois de chamar a recursão
+
 TLSE * insere_ancestrais(int elem, TLSE * lista, TABB * a){
   if(!a) return lista;
   if(a->info != elem){
