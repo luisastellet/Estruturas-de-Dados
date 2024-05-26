@@ -10,14 +10,14 @@
 #define PRETO 3;
 
 typedef struct viz{
-    int id_viz, cor;
-    struct viz *prox_viz;
+  int id_viz, cor;
+  struct viz *prox_viz;
 }TVIZ_cor;
 
 typedef struct grafo{
-    int id_no, cor;
-    TVIZ_cor *prim_viz;
-    struct grafo *prox_no;
+  int id_no, cor;
+  TVIZ_cor *prim_viz;
+  struct grafo *prox_no;
 }TG_cor;
 
 void TG_imp(TG_cor *g){

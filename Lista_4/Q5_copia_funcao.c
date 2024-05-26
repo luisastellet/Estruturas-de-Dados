@@ -5,36 +5,29 @@
 
 //(Q5) testar se dois grafos possuem as mesmas informações (não ligando para as ordens) - int ig(TG *g1, TG *g2). 
 
-// AJUSTAR QUESTÃO
-
-int ig_vizinhos(TG * p, TVIZ *v1, TG * g2){
-    TVIZ * q = v1;
-    while(q){
-        if(!TG_busca_aresta(g2, p->id_no, q->id_viz)) return 0;
-        //usando o backup pq na função busca dela precisa de toso o grafo
-        q = q->prox_viz;
+int ver_viz (TG * no1, TG * g2){
+    TVIZ * viz_no1 = no1->prim_viz;
+    while(viz_no1){
+        if(!TG_busca_aresta(g2, no1->id_no, viz_no1->id_viz)) return 0;
+        viz_no1 = viz_no1->prox_viz;
     }
     return 1;
-    //o g é pro busca aresta
 }
 
-int ig_no (TG *g1, TG *g2){
+int ver_nos (TG * no1, TG * g2){
+    if(!no1) return 1;
+    if(!TG_busca_no(g2, no1->id_no)) return 0;
+    //achei o nó igual, verei os vizinhos
+    if(!ver_viz(no1, g2)) return 0;
+    int resp = ver_nos(no1->prox_no, g2);
+    return resp;
+}
+
+int ig(TG * g1, TG * g2){
     if(!g1 && !g2) return 1;
-    TG * p = g1;
-    while(p){
-        if (!TG_busca_no(g2, p->id_no)) return 0; //procuro no g2 o conteúdo de g1
-        int x = ig_vizinhos(p, p->prim_viz, g2);
-        if(!x) return 0;
-        p = p->prox_no;
-    }
+    if((!g1 && g2) || (g1 && !g2)) return 0;
+    if(!ver_nos(g1, g2) || !ver_nos(g2, g1)) return 0;
     return 1;
-}
-
-//preciso do backup pq na chamada recursiva, não verei o g2 todo para buscar o nó do g1
-int ig(TG *g1, TG *g2){
-    printf("retorno na primeira: %d\n", ig_no(g1, g2));
-    printf("retorno da segunda: %d\n", ig_no(g2, g1));
-    return ig_no(g1, g2) && ig_no(g2, g1); // tem q fazer pros 2, pq não sei quem tem mais nós (poderia fazer uma função para conferir isso)
 }
 
 
