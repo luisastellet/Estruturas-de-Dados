@@ -6,10 +6,10 @@
 // (Q1) maior elemento da árvore: TABB* maior(TABB *a);
 
 TABB* maior(TABB *a){
-    if(!a) return a;
-    TABB * resp = a;
-    if(a->dir) resp = maior(a->dir);
-    return resp; 
+  if(!a) return a;
+  TABB * resp = a;
+  if(a->dir) resp = maior(a->dir);
+  return resp; 
 }
 
 int main(void){

@@ -7,7 +7,7 @@
 // ímpares da árvore original. A função deve ter o seguinte protótipo: TABB*
 // retira_impares(TABB* a);
 
-// Essa é a versão mais fácil, me aproveitando da função retira dela
+// Essa é a versão mais difícil, sem aproveitar a função retira dela
 
 TABB* retira_impares_sem_funcao(TABB* a){
     if(!a) return a;
@@ -19,7 +19,7 @@ TABB* retira_impares_sem_funcao(TABB* a){
             free(a);
             a = NULL;
         }
-        else if ((a->esq) || (a->dir)){ //só tem um filho
+        else if ((!a->esq) || (!a->dir)){ //só tem um filho
             TABB * aux = a;
             if(a->esq) a = a->esq;
             else a = a->dir; //se a->esq não existir, a->dir tem q existir !!!

@@ -6,11 +6,10 @@
 //(Q8) descubra a quantidade de nós internos: int ni(TAB *a);
 
 int ni(TAB *a){
-    if((!a) || ((!a->esq) && (!a->dir))) return 0;
-    int x = ni(a->esq);
-    int y = ni(a->dir);
-    // if((!a->esq) && (!a->dir)) return 0;
-    return 1+x+y;
+  if((!a) || ((!a->esq) && (!a->dir))) return 0;
+  int x = ni(a->esq);
+  int y = ni(a->dir);
+  return 1+x+y;
 }
 
 int main(void){

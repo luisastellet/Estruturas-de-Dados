@@ -27,8 +27,8 @@ TAB* retira_pares (TAB* a){
                 trocar = trocar -> dir;
             }
             int x = a-> info;
-            a->info = trocar-> info;
-            trocar ->info = x;
+            a->info = trocar->info;
+            trocar->info = x;
             free(trocar);
             a = retira_pares(a); //preciso ver se quem eu coloquei não era par
         }
