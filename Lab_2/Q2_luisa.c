@@ -4,31 +4,33 @@ Dados um grafo, dois nós x e y, retorne um caminho qualquer entre x e y. Se nã
 #include"TLSE.c"
 #include"TG.c"
 
-// CONTINUARRRRRRRRRRRR
 
 //terei q fazer chamada recursiva várias vezes
 //para evitar loop, contarei o número de interações, se for maior que o  número de nós, já não tem caminho
-
-//tenta ver o vizinho direto
-TLSE * testa_vizinhos(TG * g, TG * no, int origem, int dest, TLSE * l){
+TLSE * checa_caminho(TG *g, TLSE * l, TLSE * visitados, int origem, int destino){
+    if(!g) return l;
+    if(origem == destino) return TLSE_insere(l, origem);
+    
+    TG * no = TG_busca_no(g, origem);
     TVIZ * viz = no->prim_viz;
     while(viz){
-        if(viz->id_viz == dest){
-            l = TLSE_insere(l, origem);
-            l = TLSE_insere(l, dest);
-            return l;
+        if(!TLSE_busca(visitados, viz->id_viz)){
+            visitados = TLSE_insere(visitados, origem);
+            l = checa_caminho(g, l, visitados, viz->id_viz, destino);
+            if(l) return TLSE_insere(l, origem);
         }
         viz = viz->prox_viz;
     }
     return NULL;
 }
 
+
 TLSE *caminho (TG *g, int x, int y){
     if (!g || !TG_busca_no(g,x) || TG_busca_no(g,y)) return NULL;
-    TLSE * l = NULL;
-    l = testa_vizinhos(g, TG_busca_no(x), x, y, l);
-    if(l) return l;
-    acha_caminho(g, x, y, )
+    TLSE * l = NULL, * visitados = NULL;
+    visitados = TLSE_insere(visitados, x);
+    l = checa_caminho(g, l, visitados, x, y);
+    return l;
     
 }
 
@@ -78,7 +80,6 @@ int main(void){
             if(!resp) printf("\n\tNao ha caminho do no %d para o no %d",a,b);
             else printf("\n\tO caminho existe e eh: ");
             TLSE_imprime(resp);
-            printf("\n");
             break;
 
         default:

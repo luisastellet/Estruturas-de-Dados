@@ -4,45 +4,27 @@
 #include "TG.c"
 #include "TLSE.c"
 
-// Não pode ser iterativo !!!
-TLSE * acha_caminho(TG * no, TG * grafo, TLSE * l, int origem, int dest){
-    if(!no) return NULL;
-    TVIZ * viz = no->prim_viz;
-    if(viz->id_viz == dest){
-        return TLSE_insere(l, dest);
-    }else{
-        while(viz){
-            if(viz->id_viz != origem) l = acha_caminho(TG_busca_no(grafo, viz->id_viz), grafo, l, no->id_no, dest);
-            if(l) return TLSE_insere(l,viz->id_viz);
-            viz = viz->prox_viz;
-        }
-    }
-    return NULL;
-}
+TLSE *checa_caminho(TG* backup, TLSE *l, TLSE *visitados, int origem, int destino){
+    if(!backup) return l;
+    if (origem == destino) return TLSE_insere(l, origem);
 
-TLSE * testa_vizinhos(TG * g, TG * no, int origem, int dest, TLSE * l){
-    TVIZ * viz = no->prim_viz;
+    TG *tmp = TG_busca_no(backup, origem);
+    TVIZ *viz = tmp->prim_viz;
     while(viz){
-        if(viz->id_viz == dest){
-            l = TLSE_insere(l, origem);
-            l = TLSE_insere(l, dest);
-            return l;
+        if (!TLSE_busca(visitados, viz->id_viz)){
+            visitados = TLSE_insere(visitados, origem);
+            l = checa_caminho(backup, l, visitados, viz->id_viz, destino);
+            if (l) return TLSE_insere(l, origem);
         }
         viz = viz->prox_viz;
     }
     return NULL;
 }
 
-
-TLSE * caminho (TG * g, int x, int y){
-    if(!g) return NULL;
-    if(!TG_busca_no(g, x) || !TG_busca_no(g, y)) return NULL; //não há um dos nós, então não terá caminho
-    TLSE * l = TLSE_inicializa();
-    TG * no = TG_busca_no(g, x); // do X pro Y
-    l = testa_vizinhos(g, no, x, y, l);
-    if(l) return l; //se l for NULL, não achei vizinho direto
-    l = acha_caminho(no, g, l, x, y);
-    if(l) l = TLSE_insere(l, x);
+TLSE *caminho(TG *grafo, int x, int y){
+    if(!TG_busca_no(grafo, x) || !TG_busca_no(grafo, y)) return NULL;
+    TLSE *l = NULL, *visitados = NULL;
+    l = checa_caminho(grafo, l, visitados, x, y);
     return l;
 }
 
@@ -92,7 +74,6 @@ int main(void){
             if(!resp) printf("\n\tNao ha caminho do no %d para o no %d",a,b);
             else printf("\n\tO caminho existe e eh: ");
             TLSE_imprime(resp);
-            printf("\n");
             break;
 
         default:
