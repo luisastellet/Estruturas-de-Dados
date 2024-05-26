@@ -7,6 +7,7 @@
 //Escrever uma função em C que, dada uma árvore binária qualquer, retorne, 
 //num vetor, todos os elementos maiores que N. A função deve ter o seguinte 
 //protótipo: int* mN(TAB*a, int N, int *tam);
+
 int tamanho (TAB * a){
     if(!a) return 0;
     int x = tamanho(a->esq);

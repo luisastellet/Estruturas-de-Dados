@@ -9,12 +9,12 @@
 int resto(TAB *a){
 	if(!a) return  1;
 	if((a->esq && a->dir)) return 0; //n é zif za 2 filhos
-	if(!resto(a->esq) || !resto(a->dir)) return 0;
-
-  // int ver_esq = resto(a->esq);
-  // int ver_dir = resto(a->dir);
-  // if(!ver_dir || !ver_esq) return 0;
+  int ver_esq = resto(a->esq);
+  int ver_dir = resto(a->dir);
+  if(!ver_dir || !ver_esq) return 0;
   
+  //if(!resto(a->esq) || !resto(a->dir)) return 0;
+
 	return 1;	
 }
 
