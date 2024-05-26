@@ -47,8 +47,6 @@ int parentesco(TG * g){
     return 1;
 }
 
-
-
 int teste(TG * g){
     if(!g) return 1;
     if(!cont_filhos) return 0;

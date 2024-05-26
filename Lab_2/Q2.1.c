@@ -8,8 +8,7 @@
 TLSE * acha_caminho(TG * no, TG * grafo, TLSE * l, int origem, int dest){
     if(!no) return NULL;
     TVIZ * viz = no->prim_viz;
-    printf("%d", l->info);
-    if((viz) && (viz->id_viz == dest)){
+    if(viz->id_viz == dest){
         return TLSE_insere(l, dest);
     }else{
         while(viz){
@@ -40,11 +39,10 @@ TLSE * caminho (TG * g, int x, int y){
     if(!TG_busca_no(g, x) || !TG_busca_no(g, y)) return NULL; //não há um dos nós, então não terá caminho
     TLSE * l = TLSE_inicializa();
     TG * no = TG_busca_no(g, x); // do X pro Y
-    
     l = testa_vizinhos(g, no, x, y, l);
     if(l) return l; //se l for NULL, não achei vizinho direto
     l = acha_caminho(no, g, l, x, y);
-    if(l) l = TLSE_insere(l, x); //inserindo o início
+    if(l) l = TLSE_insere(l, x);
     return l;
 }
 
@@ -94,6 +92,7 @@ int main(void){
             if(!resp) printf("\n\tNao ha caminho do no %d para o no %d",a,b);
             else printf("\n\tO caminho existe e eh: ");
             TLSE_imprime(resp);
+            printf("\n");
             break;
 
         default:
