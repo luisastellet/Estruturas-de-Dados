@@ -15,10 +15,10 @@ int altura(TAB *a){
 
 void eh_avl_aux (TAB * a, int * resp){
   if(!a) return;
-  eh_avl_aux(a->esq, resp);
-  eh_avl_aux(a->dir, resp);
   int fb = altura(a->esq) - altura(a->dir);
   if((fb > 1) || (fb < -1)) (*resp) = 0;
+  eh_avl_aux(a->esq, resp);
+  eh_avl_aux(a->dir, resp);
   return;
 }
 
