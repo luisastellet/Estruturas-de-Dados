@@ -52,7 +52,6 @@ int main(){
     TARVB_Imprime(aux);
 
     TARVB_Libera(arvore);
-    TARVB_Libera(aux);
 
     return 0;
 }

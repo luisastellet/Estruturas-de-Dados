@@ -1,25 +1,24 @@
 #include "TARVB.c"
 
-// quantidade de nós internos: int ni(TARVB *a);
+// quantidade de nós totais: int nt(TARVB *a);
 
-void ni_aux(TARVB * a, int * cont){
+void nt_aux(TARVB * a, int * cont){
     if(!a) return;
     if(a->folha){
+        (*cont)++;
         return;
     }
-    for(int i =0; i<=a->nchaves; i++){
-        ni_aux(a->filho[i], cont);
+    for(int i = 0; i <= a->nchaves; i++){
+        nt_aux(a->filho[i], cont);
     }
     (*cont)++;
     return;
-
 }
 
-int ni(TARVB *a){
+int nt(TARVB *a){
     if(!a) return 0;
-    if(a->folha) return 1;
-    int cont=0;
-    ni_aux(a, &cont);
+    int cont = 0;
+    nt_aux(a, &cont); 
     return cont;
 }
 
@@ -53,7 +52,7 @@ int main(){
         printf("\n\n");
     }
 
-    printf("nos internos: %d \n", ni(arvore));
+    printf("nos totais: %d \n", nt(arvore));
 
     TARVB_Libera(arvore);
 

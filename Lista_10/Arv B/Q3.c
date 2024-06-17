@@ -2,12 +2,21 @@
 
 // menor elemento da árvore: TARVB* menor(TARVB *a);
 
-TARVB * menor(TARVB *a){
+TARVB * menor(TARVB * a){
     if(!a) return NULL;
-    if(a->folha) return a;
-    TARVB * min = menor(a->filho[0]);
-    return min;
+    TARVB * resp = menor(a->filho[0]);
+    if(!resp) return a;
+    //existe resp
+    if(a->chave[0] < resp->chave[0]) return a;
+    return resp;
 }
+
+// TARVB * menor(TARVB *a){
+//     if(!a) return a;
+//     if(a->folha) return a;
+//     TARVB * min = menor(a->filho[0]);
+//     return min;
+// }
 
 int main(){
     TARVB *arvore = TARVB_Inicializa();
@@ -44,7 +53,5 @@ int main(){
     TARVB_Imprime(aux);
 
     TARVB_Libera(arvore);
-    TARVB_Libera(aux);
-
     return 0;
 }

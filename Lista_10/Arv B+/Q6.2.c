@@ -1,18 +1,15 @@
 #include "TARVBM.c"
 
-// maior elemento da árvore: TARVBM* maior(TARVBM *a);
+// quantidade de chaves dos nós internos: int ni(TARVBM *a);
 
-TARVBM* maior(TARVBM *a){
-    if(!a) return NULL;
-    if(a->folha) return a;
-    TARVBM * maior = NULL;
-    while(a->filho[a->nchaves]){
-        maior = a->filho[a->nchaves];
-        a = a->filho[a->nchaves];
+int ni(TARVBM *a){
+    if(!a || a->folha) return 0;
+    int cont=0;
+    for(int i=0; i<=a->nchaves; i++){
+        cont += ni(a->filho[i]);
     }
-    return maior;
+    return cont + a->nchaves;
 }
-
 
 int main(int argc, char *argv[]){
     TARVBM *arvore = TARVBM_inicializa();
@@ -43,9 +40,8 @@ int main(int argc, char *argv[]){
         else arvore = TARVBM_insere(arvore, num, t);
         printf("\n\n");
     }
-    TARVBM * resp = maior(arvore);
-    printf("\nO maior eh %d\n", resp->chave[resp->nchaves-1]);
-    //se considerar que não posso fazer esse print assim na main, só colocar ele na função
-    //mas como o retorno foi o nó, julguei que a main seria assim
+    int resp = ni(arvore);
+    printf("\nO numero de chaves dos nos internos eh %d\n", resp);
+
     TARVBM_libera(arvore);
 }

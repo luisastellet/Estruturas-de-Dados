@@ -1,27 +1,23 @@
 #include "TARVB.c"
+#include <limits.h>
 
-// quantidade de nós internos: int ni(TARVB *a);
+// sucessor de um elemento na árvore. Se o elemento for o maior da estrutura, sua
+// função deve retornar INT_MAX: int suc (TARVB *a, int elem);
 
-void ni_aux(TARVB * a, int * cont){
-    if(!a) return;
-    if(a->folha){
-        return;
-    }
-    for(int i =0; i<=a->nchaves; i++){
-        ni_aux(a->filho[i], cont);
-    }
-    (*cont)++;
-    return;
+//sucessor considerando o elemento seguinte do mesmo nó
 
+int suc (TARVB *a, int elem){
+  if(!a) return -1;
+  TARVB * aux = TARVB_Busca(a, elem); //nó que guarda o elemento
+  if(!aux) return -1;
+  int i;
+  for(i=0; i<aux->nchaves; i++){
+    if(aux->chave[i] == elem) break;
+  }
+  if(aux->nchaves > i+1) return aux->chave[i+1];
+  return INT_MAX;
 }
 
-int ni(TARVB *a){
-    if(!a) return 0;
-    if(a->folha) return 1;
-    int cont=0;
-    ni_aux(a, &cont);
-    return cont;
-}
 
 int main(){
     TARVB *arvore = TARVB_Inicializa();
@@ -52,8 +48,11 @@ int main(){
         else arvore = TARVB_Insere(arvore, num, t);
         printf("\n\n");
     }
-
-    printf("nos internos: %d \n", ni(arvore));
+    printf("Escolha um numero: ");
+    int n;
+    scanf("%d", &n);
+    int sucessor = suc(arvore, n);
+    printf("o sucessor do elemento escolhido eh %d \n", sucessor);
 
     TARVB_Libera(arvore);
 
