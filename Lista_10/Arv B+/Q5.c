@@ -4,34 +4,34 @@
 // árvore original. A função deve ter o seguinte protótipo: TARVBM* retira_pares
 // (TARVBM* a);
 
-TARVBM* retira_pares(TARVBM* a){
-    if(!a) return NULL;
-    int i;
-    TARVBM * aux = a;
-    if(aux->folha){
-        i=0;
-        while(i < aux->nchaves){
-            if(aux->chave[i] % 2 == 0){
-                aux = TARVBM_retira(aux, aux->chave[i], 2); //t é 2 nesse caso
-            } else i++;
-        }
-        return aux;
-    }
-    while(aux->filho[0]){
-        aux = aux->filho[0];
-    }
-    while(aux){
-        i=0;
-        while(i < aux->nchaves){
-            if(aux->chave[i] % 2 == 0){
-                aux = TARVBM_retira(aux, aux->chave[i], 2); //t é 2 nesse caso
-                i--;
-            }else i++;
-        }
-        aux = aux->prox;
-    }
-    return aux;
-}
+// TARVBM* retira_pares(TARVBM* a){
+//     if(!a) return NULL;
+//     int i;
+//     TARVBM * aux = a;
+//     if(aux->folha){
+//         i=0;
+//         while(i < aux->nchaves){
+//             if(aux->chave[i] % 2 == 0){
+//                 aux = TARVBM_retira(aux, aux->chave[i], 2); //t é 2 nesse caso
+//             } else i++;
+//         }
+//         return aux;
+//     }
+//     while(aux->filho[0]){
+//         aux = aux->filho[0];
+//     }
+//     while(aux){
+//         i=0;
+//         while(i < aux->nchaves){
+//             if(aux->chave[i] % 2 == 0){
+//                 aux = TARVBM_retira(aux, aux->chave[i], 2); //t é 2 nesse caso
+//                 i--;
+//             }else i++;
+//         }
+//         aux = aux->prox;
+//     }
+//     return aux;
+// }
 
 int main(int argc, char *argv[]){
     TARVBM *arvore = TARVBM_inicializa();

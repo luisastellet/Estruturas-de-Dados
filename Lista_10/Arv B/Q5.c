@@ -4,45 +4,43 @@
 // árvore original. A função deve ter o seguinte protótipo: TARVB* retira_pares
 // (TARVB* a);
 
+TARVB *retira_pares(TARVB *a){
+    if(!a) return NULL;
+    int i;
+    for(i=0; i<a->nchaves; i++){
+        a->filho[i] = retira_pares(a->filho[i]);
+        if(a->chave[i] % 2 == 0){
+            a = TARVB_Retira(a, a->chave[i], 2);
+            i = 0;
+        }
+    }
+    a->filho[i] = retira_pares(a->filho[i]);
+    if(a->chave[i] % 2 == 0){
+        a = TARVB_Retira(a, a->chave[i], 2);
+        i = 0;
+    }
+    return a;
+}
+
+
 // TARVB* retira_pares (TARVB* a){
 //     if(!a) return NULL;
 //     int i = 0;
+//     while(i < a->nchaves){
+//         if(a->chave[i] % 2 == 0){
+//             a = TARVB_Retira(a, a->chave[i], 2);
+//         }else i += 1; //so incrementa o i se não tirou ngm, se tirou tem q ver de novo o nó
+//     }
 //     if(!a->folha){
-//         for(i = 0; i<=a->nchaves; i++){
+//         i = 0;
+//         while(i <= a->nchaves){
 //             a->filho[i] = retira_pares(a->filho[i]);
-//         }
-//         i = 0;
-//         while(i < a->nchaves){
-//             if((a->chave[i]) && (a->chave[i] % 2 == 0)){
-//                 a = TARVB_Retira(a, a->chave[i], 2);
-//             }else i++;
-//         }
-//     }else{
-//         i = 0;
-//         while(i < a->nchaves){
-//             if((a->chave[i]) && (a->chave[i] % 2 == 0)){
-//                 a = TARVB_Retira(a, a->chave[i], 2);
-//             }else i++;
+//             i++;
 //         }
 //     }
 //     return a;
 // }
 
-
-TARVB* retira_pares (TARVB* a){
-    if(!a) return NULL;
-    for(int i=0; i<a->nchaves; i++){
-        if(a->chave[i] % 2 == 0){
-            a = TARVB_Retira(a, a->chave[i], 2);
-        }else i++;
-    }
-    if(!a->folha){
-        for(int i = 0; i<=a->nchaves; i++){
-            a->filho[i] = retira_pares(a->filho[i]);
-        }
-    }
-    return a;
-}
 
 
 int main(){
@@ -76,7 +74,7 @@ int main(){
     TARVB *aux = retira_pares(arvore);
     TARVB_Imprime(aux);
 
-    TARVB_Libera(arvore);
+    TARVB_Libera(aux);
 
     return 0;
 }
