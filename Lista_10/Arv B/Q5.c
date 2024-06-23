@@ -1,46 +1,36 @@
 #include "TARVB.c"
+#include "TLSE.c"
 
 // função em C que, dada uma árvore qualquer, retire todos os elementos pares da
 // árvore original. A função deve ter o seguinte protótipo: TARVB* retira_pares
-// (TARVB* a);
+// (TARVB* a)
 
-TARVB *retira_pares(TARVB *a){
-    if(!a) return NULL;
+void achar_pares(TARVB * a, TLSE ** l){
+    if(!a) return;
     int i;
     for(i=0; i<a->nchaves; i++){
-        a->filho[i] = retira_pares(a->filho[i]);
+        achar_pares(a->filho[i], l);
         if(a->chave[i] % 2 == 0){
-            a = TARVB_Retira(a, a->chave[i], 2);
-            i = 0;
-        }
+            (*l) = TLSE_insere((*l), a->chave[i]);
+        } 
     }
-    a->filho[i] = retira_pares(a->filho[i]);
-    if(a->chave[i] % 2 == 0){
-        a = TARVB_Retira(a, a->chave[i], 2);
-        i = 0;
-    }
-    return a;
+    achar_pares(a->filho[i], l);
+    return;
 }
 
-
-// TARVB* retira_pares (TARVB* a){
-//     if(!a) return NULL;
-//     int i = 0;
-//     while(i < a->nchaves){
-//         if(a->chave[i] % 2 == 0){
-//             a = TARVB_Retira(a, a->chave[i], 2);
-//         }else i += 1; //so incrementa o i se não tirou ngm, se tirou tem q ver de novo o nó
-//     }
-//     if(!a->folha){
-//         i = 0;
-//         while(i <= a->nchaves){
-//             a->filho[i] = retira_pares(a->filho[i]);
-//             i++;
-//         }
-//     }
-//     return a;
-// }
-
+TARVB* retira_pares (TARVB* a){
+    if(!a) return NULL;
+    TLSE * l = NULL;
+    achar_pares(a, &l);
+    TLSE * p = l;
+    TLSE_imp_rec(l);
+    while(p){
+        a = TARVB_Retira(a, p->info, 2);
+        p = p->prox;
+    }
+    free(l);
+    return a;
+}
 
 
 int main(){
@@ -72,6 +62,7 @@ int main(){
     }
 
     TARVB *aux = retira_pares(arvore);
+    printf("Arvore sem os pares:\n");
     TARVB_Imprime(aux);
 
     TARVB_Libera(aux);

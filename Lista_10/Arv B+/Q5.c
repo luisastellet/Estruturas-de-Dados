@@ -1,37 +1,36 @@
 #include "TARVBM.c"
+#include "TLSE.c"
 
 // função em C que, dada uma árvore qualquer, retire todos os elementos pares da
 // árvore original. A função deve ter o seguinte protótipo: TARVBM* retira_pares
 // (TARVBM* a);
 
-// TARVBM* retira_pares(TARVBM* a){
-//     if(!a) return NULL;
-//     int i;
-//     TARVBM * aux = a;
-//     if(aux->folha){
-//         i=0;
-//         while(i < aux->nchaves){
-//             if(aux->chave[i] % 2 == 0){
-//                 aux = TARVBM_retira(aux, aux->chave[i], 2); //t é 2 nesse caso
-//             } else i++;
-//         }
-//         return aux;
-//     }
-//     while(aux->filho[0]){
-//         aux = aux->filho[0];
-//     }
-//     while(aux){
-//         i=0;
-//         while(i < aux->nchaves){
-//             if(aux->chave[i] % 2 == 0){
-//                 aux = TARVBM_retira(aux, aux->chave[i], 2); //t é 2 nesse caso
-//                 i--;
-//             }else i++;
-//         }
-//         aux = aux->prox;
-//     }
-//     return aux;
-// }
+void achar_pares(TARVBM * a, TLSE ** l){
+    if(!a) return;
+    int i;
+    for(i=0; i<a->nchaves; i++){
+        achar_pares(a->filho[i], l);
+        if((a->folha) && (a->chave[i] % 2 == 0)){
+            (*l) = TLSE_insere((*l), a->chave[i]);
+        } 
+    }
+    achar_pares(a->filho[i], l);
+    return;
+}
+
+TARVBM * retira_pares (TARVBM * a){
+    if(!a) return NULL;
+    TLSE * l = NULL;
+    achar_pares(a, &l);
+    TLSE * p = l;
+    TLSE_imp_rec(l);
+    while(p){
+        a = TARVBM_retira(a, p->info, 2);
+        p = p->prox;
+    }
+    free(l);
+    return a;
+}
 
 int main(int argc, char *argv[]){
     TARVBM *arvore = TARVBM_inicializa();
