@@ -5,23 +5,23 @@
 // árvore original. A função deve ter o seguinte protótipo: TARVB* retira_pares
 // (TARVB* a)
 
-void achar_pares(TARVB * a, TLSE ** l){
-    if(!a) return;
+TLSE * achar_pares(TARVB * a, TLSE * l){
+    if(!a) return l;
     int i;
     for(i=0; i<a->nchaves; i++){
-        achar_pares(a->filho[i], l);
+        l = achar_pares(a->filho[i], l);
         if(a->chave[i] % 2 == 0){
-            (*l) = TLSE_insere((*l), a->chave[i]);
+            l = TLSE_insere(l, a->chave[i]);
         } 
     }
-    achar_pares(a->filho[i], l);
-    return;
+    l = achar_pares(a->filho[i], l);
+    return l;
 }
 
 TARVB* retira_pares (TARVB* a){
     if(!a) return NULL;
     TLSE * l = NULL;
-    achar_pares(a, &l);
+    l = achar_pares(a, l);
     TLSE * p = l;
     TLSE_imp_rec(l);
     while(p){
