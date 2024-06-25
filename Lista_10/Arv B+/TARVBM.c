@@ -1,6 +1,6 @@
 #include "TARVBM.h"
 
-TARVBM *TARVBM_cria(int t){
+  TARVBM *TARVBM_cria(int t){
   TARVBM* novo = (TARVBM*)malloc(sizeof(TARVBM));
   novo->nchaves = 0;
   novo->chave =(int*)malloc(sizeof(int)*((t*2)-1));
@@ -10,14 +10,14 @@ TARVBM *TARVBM_cria(int t){
   int i;
   for(i=0; i<(t*2); i++) novo->filho[i] = NULL;
   return novo;
-}
+  }
 
 
-TARVBM *TARVBM_inicializa(void){
+  TARVBM *TARVBM_inicializa(void){
   return NULL;
-}
+  }
 
-void TARVBM_libera(TARVBM *a){
+  void TARVBM_libera(TARVBM *a){
   if(a){
     if(!a->folha){
       int i;
@@ -26,9 +26,9 @@ void TARVBM_libera(TARVBM *a){
     free(a->chave);
     free(a);
   }
-}
+  }
 
-TARVBM *TARVBM_busca(TARVBM *a, int mat){
+  TARVBM *TARVBM_busca(TARVBM *a, int mat){
   if (!a) return NULL;
   int i = 0;
   while ((i < a->nchaves) && (mat > a->chave[i])) i++;
@@ -36,10 +36,10 @@ TARVBM *TARVBM_busca(TARVBM *a, int mat){
   if (a-> folha) return NULL;
   if (a->chave[i] == mat) i++;
   return TARVBM_busca(a->filho[i], mat);
-}
+  }
 
 
-void TARVBM_imprime_chaves(TARVBM *a){
+  void TARVBM_imprime_chaves(TARVBM *a){
   if(!a) return;
   TARVBM *p = a;
   while(p->filho[0]) p = p->filho[0];
@@ -49,10 +49,10 @@ void TARVBM_imprime_chaves(TARVBM *a){
     p = p->prox;
   }
   printf("\n");
-}
+  }
 
 
-void imp(TARVBM *a, int andar){
+  void imp(TARVBM *a, int andar){
   if(a){
     int i,j;
     for(i=0; i<=a->nchaves-1; i++){
@@ -62,13 +62,13 @@ void imp(TARVBM *a, int andar){
     }
     imp(a->filho[i],andar+1);
   }
-}
+  }
 
-void TARVBM_imprime(TARVBM *a){
+  void TARVBM_imprime(TARVBM *a){
   imp(a, 0);
-}
+  }
 
-TARVBM *divisao(TARVBM *x, int i, TARVBM* y, int t){
+  TARVBM *divisao(TARVBM *x, int i, TARVBM* y, int t){
   TARVBM *z = TARVBM_cria(t);
   z->folha = y->folha;
   int j;
@@ -81,8 +81,8 @@ TARVBM *divisao(TARVBM *x, int i, TARVBM* y, int t){
     }
   }
   else {
-    z->nchaves = t; //z possuirá uma chave a mais que y se for folha
-    for(j=0;j < t;j++) z->chave[j] = y->chave[j+t-1];//Caso em que y é folha, temos q passar a info para o nó da direita
+    z->nchaves = t; //z possuirï¿½ uma chave a mais que y se for folha
+    for(j=0;j < t;j++) z->chave[j] = y->chave[j+t-1];//Caso em que y ï¿½ folha, temos q passar a info para o nï¿½ da direita
     z->prox = y->prox; //ultima revisao: 04/2020
     y->prox = z;
   }
@@ -93,10 +93,10 @@ TARVBM *divisao(TARVBM *x, int i, TARVBM* y, int t){
   x->chave[i-1] = y->chave[t-1];
   x->nchaves++;
   return x;
-}
+  }
 
 
-TARVBM *insere_nao_completo(TARVBM *x, int mat, int t){
+  TARVBM *insere_nao_completo(TARVBM *x, int mat, int t){
   int i = x->nchaves-1;
   if(x->folha){
     while((i>=0) && (mat < x->chave[i])){
@@ -115,9 +115,9 @@ TARVBM *insere_nao_completo(TARVBM *x, int mat, int t){
   }
   x->filho[i] = insere_nao_completo(x->filho[i], mat, t);
   return x;
-}
+  }
 
-TARVBM *TARVBM_insere(TARVBM *T, int mat, int t){
+  TARVBM *TARVBM_insere(TARVBM *T, int mat, int t){
   if(TARVBM_busca(T, mat)) return T;
   if(!T){
     T=TARVBM_cria(t);
@@ -136,10 +136,10 @@ TARVBM *TARVBM_insere(TARVBM *T, int mat, int t){
   }
   T = insere_nao_completo(T, mat, t);
   return T;
-}
+  }
 
 
-TARVBM* remover(TARVBM* arv, int ch, int t){
+  TARVBM* remover(TARVBM* arv, int ch, int t){
   if(!arv) return arv;
   int i;
   for(i = 0; i < arv->nchaves && arv->chave[i] < ch; i++);
@@ -228,7 +228,7 @@ TARVBM* remover(TARVBM* arv, int ch, int t){
           }
           TARVBM_libera(z);
         }
-        for(j=i; j < arv->nchaves-1; j++){ //limpar referências de i
+        for(j=i; j < arv->nchaves-1; j++){ //limpar referï¿½ncias de i
           arv->chave[j] = arv->chave[j+1];
           arv->filho[j+1] = arv->filho[j+2];
         }
@@ -288,11 +288,11 @@ TARVBM* remover(TARVBM* arv, int ch, int t){
   }  
   arv->filho[i] = remover(arv->filho[i], ch, t);
   return arv;
-}
+  }
 
 
-TARVBM* TARVBM_retira(TARVBM* arv, int k, int t){
+  TARVBM* TARVBM_retira(TARVBM* arv, int k, int t){
   if(!arv || !TARVBM_busca(arv, k)) return arv;
   return remover(arv, k, t);
-}
+  }
 
