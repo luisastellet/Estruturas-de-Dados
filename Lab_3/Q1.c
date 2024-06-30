@@ -1,29 +1,32 @@
+// (Q1) Uma função em C que, dada uma árvore B qualquer, retorne, numa lista, todos
+// os elementos maiores que N. A função deve ter o seguinte protótipo: 
+// TLSE* mN(TARVB*a, int N);
+
+// tem a->nchaves filho
+// tem a->nchaves - 1 chave
+
 #include "TARVB.c"
-#include <limits.h>
+#include "TLSE.c"
 
-// sucessor de um elemento na árvore. Se o elemento for o maior da estrutura, sua
-// função deve retornar INT_MAX: int suc (TARVB *a, int elem);
-
-//sucessor considerando o filho da direita
-
-int suc (TARVB *a, int elem){
-  if(!a) return -1;
-  TARVB * aux = TARVB_Busca(a, elem); //nó que guarda o elemento
-  if(!aux) return -1;
-  int i;
-  for(i=0; i<aux->nchaves; i++){
-    if(aux->chave[i] == elem) break;
-  }
-  if(aux->folha){
-    if(aux->nchaves > i+1 ) return aux->chave[i+1];
-    if(i == aux->nchaves-1) return INT_MAX; // não tem ngm do lado
-  }
-  if(aux->filho[i+1]){ //tem filho da direita
-    return aux->filho[i+1]->chave[0];
-  }
-  return INT_MAX;
+TLSE * aux(TARVB * a, int N, TLSE * l){
+    if(!a) return l;
+    int i;
+    for(i=0; i<a->nchaves; i++){
+        l = aux(a->filho[i], N, l);
+        if(a->chave[i] > N){
+            l = TLSE_insere(l, a->chave[i]);
+        } 
+    }
+    l = aux(a->filho[i], N, l);
+    return l;
 }
 
+TLSE * mN (TARVB *a, int N){
+    if(!a) return NULL;
+    TLSE * lista = NULL;
+    lista = aux(a, N, lista);
+    return lista;
+}
 
 int main(){
     TARVB *arvore = TARVB_Inicializa();
@@ -54,11 +57,12 @@ int main(){
         else arvore = TARVB_Insere(arvore, num, t);
         printf("\n\n");
     }
-    printf("Escolha um numero: ");
+    TLSE * l = NULL;
     int n;
+    printf("Qual o valor de N? ");
     scanf("%d", &n);
-    int sucessor = suc(arvore, n);
-    printf("o sucessor do elemento escolhido eh %d \n", sucessor);
+    l = mN(arvore, n);
+    TLSE_imprime(l);
 
     TARVB_Libera(arvore);
 

@@ -7,50 +7,38 @@
 //   struct lseint *prox;
 // } TLSEINT;
 
-#include "TARVB.c"
-#include "TLSEINT.c"
+#include "../TLSEINT.c"
+#include "../TARVB.c"
 #include <limits.h>
 
 TLSEINT * aux(TARVB * a, int elem, TLSEINT * l){
-    if(!a) return l;
-    int i, maior = INT_MAX, menor = INT_MIN;
+    if (!a) return l;
+    int i;
+    int menor = INT_MIN, maior = INT_MIN;
     for(i=0; i<a->nchaves; i++){
+        if(a->chave[i] < elem) continue;
+        l = aux(a->filho[i], elem, l);
         if(a->chave[i] == elem){
-            if(i-1 >= 0){
-                menor = a->chave[i-1];
-            } else menor = INT_MIN;
-            if(i+1 <a->nchaves){
-                maior = a->chave[i+1];
-            } else maior = INT_MAX;
-            l = TLSEINT_insere(l , menor, maior);
+            if(i-1 >= 0) menor = a->chave[i-1];
+            if(i+1 < a->nchaves) maior = a->chave[i+1];
+            l = TLSEINT_insere(l, menor, maior);
             return l;
         }
-        if(a->chave[i] > elem) break;
+    }
+    l = aux(a->filho[i], elem, l);
+    menor = INT_MIN, maior = INT_MIN;
+    for(i=0; i<a->nchaves; i++){
+        if(a->chave[i] < elem) continue;
+        if(i-1 >= 0) menor = a->chave[i-1];
+        if(i+1 < a->nchaves) maior = a->chave[i+1];
+        l = TLSEINT_insere(l, menor, maior);
         
     }
-    // i = 1
-    l = aux(a->filho[i], elem, l);
-    int j;
-    for(j = 0; j<a->nchaves; j++){
-        if(a->chave[j] < elem) continue;
-
-        if(j-1 >= 0) menor = a->chave[j-1];
-        else menor = INT_MIN;
-
-        maior = a->chave[j];
-        break;
-    }
-    if(j == a->nchaves){ // n teve break
-        menor = a->chave[a->nchaves - 1];
-    }
-
-    l = TLSEINT_insere(l, menor, maior);
     return l;
 }
 
 TLSEINT* misc(TARVB *a, int elem){
     if(!a) return NULL;
-    if(!TARVB_Busca(a, elem)) return NULL;
     TLSEINT * l = NULL;
     l = aux(a, elem, l);
     return l;
