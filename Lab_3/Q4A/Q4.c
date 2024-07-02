@@ -25,7 +25,6 @@ void inter(char* arq1, char* arq2, char* saida){
     printf("Qual o tamanho da hash? ");
     scanf("%d", &tam);
     TH_inicializa("HashA.bin", 5);
-    //FILE * fs = fopen(saida, "wt");
     int tmp;
     while(fscanf(fp1, "%d", &tmp) == 1){
         TH_insere("HashA.bin", "dadosA.bin", tam, tmp);

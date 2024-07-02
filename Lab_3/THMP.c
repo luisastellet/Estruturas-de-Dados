@@ -1,95 +1,90 @@
-#include "THMP.h"
+#include <float.h>
+#include "TH.h"
 
-int TH_hash(int num, int tam){
-    return num % tam;
+int TH_hash(int mat, int n){
+  return mat % n;
 }
 
-void TH_inicializa(TH tab, int tam){
-    int i;
-    for(i=0; i<tam; i++) tab[i] = NULL;
+void TH_inicializa(TH tab, int n){
+  int i;
+  for(i = 0; i < n; i++)tab[i] = NULL;
+}
+
+TA* TH_busca(TH tab, int n, int mat){
+  int h = TH_hash(mat, n);
+  TA *p = tab[h];
+  while((p) && (p->mat < mat)) p = p->prox;
+  if((p) && (p->mat == mat)) return p;
+  return NULL;
+}
+
+TA* TH_aloca(int mat, float cr){
+  TA *novo = (TA*) malloc (sizeof (TA));
+  novo->mat = mat;
+  novo->cr = cr;
+  novo->prox = NULL;
+  return novo;
+}
+
+void TH_insere(TH tab, int n, int mat, float cr){
+  int h = TH_hash(mat, n);
+  TA *p = tab[h],*ant = NULL;
+  while((p) && (p->mat < mat)){
+    ant = p;
+    p = p->prox;
+  }
+  if((p) && (p->mat == mat)){
+    p->cr = cr;
     return;
+  }
+  TA *novo = TH_aloca(mat, cr);
+  novo->prox = p;
+  if(!ant)tab[h] = novo;
+  else ant->prox = novo;
 }
 
-TNUM * TNUM_aloca(int num){
-    TNUM * novo = (TNUM*)malloc(sizeof(TNUM));
-    novo->num = num;
-    novo->prox = NULL;
-    novo->qtde = 1;
-    return novo;
-}
-
-void TH_imprime (TH tab, int tam){
-    int i = 0;
-    while(i<tam){
-        TNUM * p = tab[i];
-        while(p){
-            printf("%d -> ", p->num);
-            p = p->prox;
-        }
-        printf("\n");
-        i++;
-    }
-    return;
-}
-
-TNUM* TH_busca(TH tab, int tam, int num){
-    int h = TH_hash(num, tam);
-    TNUM * p = tab[h];
-    while(p){
-        if(p->num == num) return p;
+void TH_libera(TH tab, int n){
+  int i;
+  for(i = 0; i < n; i++)
+    if(tab[i]){
+      TA *p = tab[i], *q;
+      while(p){
+        q = p;
         p = p->prox;
+        free(q);
+      }
     }
-    return NULL;
 }
 
-TNUM * insere_aux(TNUM * a, int num){
-    if(num == a->num){
-        a->qtde++;
-        return a;
-    }
-    if(a->num < num) a->prox = insere_aux(a->prox, num);
-    else{
-        TNUM * aux = TNUM_aloca(num);
-        aux->prox = a;
-        return aux;
-    }
-    return a;
+float TH_retira(TH tab, int n, int mat){
+  int h = TH_hash(mat, n);
+  if(!tab[h]) return FLT_MIN;
+  TA *p = tab[h],*ant = NULL;
+  float cr = FLT_MIN;
+  while((p) && (p->mat < mat)){
+    ant = p;
+    p = p->prox;
+  }
+  if((!p) || (p->mat != mat)) return cr;
+  if(!ant) tab[h] = p->prox;
+  else ant->prox = p->prox;
+  cr = p->cr;
+  free(p);
+  return cr;
 }
 
-TH * TH_insere(TH * tab, int tam, int num){
-    int h = TH_hash(num, tam);
-    *tab[h] = insere_aux(*tab[h], num);
-    return;
-}
-
-TNUM * retira_aux(TNUM * a, int num){
-    if(num == a-> num){
-        TNUM * tmp = a;
-        a = a->prox;
-        free(tmp);
-        return a;
+void TH_imprime(TH tab, int n){
+  int i;
+  for(i = 0; i < n; i++){
+    printf("%d: ", i);
+    if(tab[i]){
+      TA *p = tab[i];
+      printf("\n");
+      while(p){
+        printf("\t%d\t%f\t%p\n", p->mat, p->cr, p->prox);
+        p = p->prox;
+      }
     }
-    a->prox = retira_aux(a->prox, num);
-    return a;
-}
-
-
-TH * TH_retira(TH tab, int tam, int num){
-    int h = TH_hash(num, tab);
-    tab[h] = retira_aux(tab[h], num);
-    return tab;
-}
-
-void TH_libera(TH tab, int tam){
-    int i = 0;
-    while(i<tam){
-        TNUM * p = tab[i];
-        while(p){
-            TNUM * tmp = p;
-            p = p->prox;
-            free(tmp);
-        }
-        i++;
-    }
-    return;
+    else printf("NULL\n");
+  }
 }

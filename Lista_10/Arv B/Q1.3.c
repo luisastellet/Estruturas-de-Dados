@@ -5,39 +5,26 @@
 // função deve retornar INT_MAX: int suc (TARVB *a, int elem);
 
 //sucessor considerando o filho da direita
+//se não tivr filhp da direito, tem q ver o pai
 
 void achar(TARVB * a, int elem, int * resp){
-  if(!a) return;
-  int i;
-  for(i=0; i<a->nchaves; i++){
-    if(a->chave[i] == elem) return;
+    if(!a) return;
+    int i=0;
+    while(i < a->nchaves && a->chave[i] <= elem){
+        i++;
+    }
+    if(i < a->nchaves){
+        if(a->chave[i] > elem && a->chave[i] < *resp) *resp = a->chave[i];
+    }
     achar(a->filho[i], elem, resp);
-    if(a->chave[i] > elem && a->chave[i] < *resp ) *resp = a->chave[i];
-  }
-  achar(a->filho[i], elem, resp);
-  return;
+    return;
 }
 
 int suc (TARVB *a, int elem){
-  if(!a) return -1;
-  TARVB * aux = TARVB_Busca(a, elem); //nó que guarda o elemento
-  if(!aux) return -1;
-  int i;
-  for(i=0; i<aux->nchaves; i++){
-    if(aux->chave[i] == elem) break;
-  }
-  if(aux->folha){
-    if(aux->nchaves > i+1 ) return aux->chave[i+1];
-    if(i == aux->nchaves-1){ //return INT_MAX; // não tem ngm do lado
-      int resp = INT_MAX;
-      achar(a, elem, &resp);
-      return resp;
-    }
-  }
-  if(aux->filho[i+1]){ //não tem filho da direita
-    return aux->filho[i+1]->chave[0];
-  }
-  return INT_MAX;
+    if(!a) return -1;
+    int resp = INT_MAX;
+    achar(a, elem, &resp);
+    return resp;
 }
 
 
